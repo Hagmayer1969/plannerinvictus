@@ -831,6 +831,88 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // AI Summary Generation
+    const generateAIBtn = document.getElementById('generateAISummary');
+    const retryAIBtn = document.getElementById('retryAISummary');
+
+    async function handleAISummaryGeneration() {
+        const entries = getAllEntriesForMonth(currentYear, currentMonth);
+
+        if (entries.length === 0) {
+            showToast('Nenhum registro encontrado para este mês');
+            return;
+        }
+
+        // Collect all data
+        const gratitudes = [];
+        const goals = [];
+        const improvements = [];
+
+        entries.forEach(entry => {
+            if (entry.gratitude1) gratitudes.push(entry.gratitude1);
+            if (entry.gratitude2) gratitudes.push(entry.gratitude2);
+            if (entry.gratitude3) gratitudes.push(entry.gratitude3);
+            if (entry.goal) goals.push(entry.goal);
+            if (entry.improvement1) improvements.push(entry.improvement1);
+            if (entry.improvement2) improvements.push(entry.improvement2);
+            if (entry.improvement3) improvements.push(entry.improvement3);
+        });
+
+        // Show loading
+        document.getElementById('aiSummaryResult').style.display = 'none';
+        document.getElementById('aiSummaryError').style.display = 'none';
+        document.getElementById('aiSummaryLoading').style.display = 'flex';
+
+        try {
+            const monthNames = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            const monthName = monthNames[currentMonth];
+            const lesson = monthlyLessons[currentMonth];
+
+            const summary = await generateAISummary(
+                gratitudes,
+                goals,
+                improvements,
+                monthName,
+                lesson.title
+            );
+
+            // Show result
+            document.getElementById('aiSummaryLoading').style.display = 'none';
+            document.getElementById('aiSummaryText').innerHTML = summary.replace(/\n/g, '<br>');
+            document.getElementById('aiSummaryResult').style.display = 'block';
+
+        } catch (error) {
+            console.error('Erro ao gerar resumo:', error);
+            document.getElementById('aiSummaryLoading').style.display = 'none';
+            document.getElementById('aiSummaryError').style.display = 'block';
+        }
+    }
+
+    generateAIBtn.addEventListener('click', handleAISummaryGeneration);
+    retryAIBtn.addEventListener('click', handleAISummaryGeneration);
+
+    // Toggle raw data
+    const toggleRawDataBtn = document.getElementById('toggleRawData');
+    const rawDataContent = document.getElementById('rawDataContent');
+    const rawDataBtnText = document.getElementById('rawDataBtnText');
+
+    toggleRawDataBtn.addEventListener('click', () => {
+        const isVisible = rawDataContent.style.display !== 'none';
+
+        if (isVisible) {
+            rawDataContent.style.display = 'none';
+            rawDataBtnText.textContent = 'Ver Dados Detalhados';
+            toggleRawDataBtn.classList.remove('active');
+        } else {
+            rawDataContent.style.display = 'block';
+            rawDataBtnText.textContent = 'Ocultar Dados Detalhados';
+            toggleRawDataBtn.classList.add('active');
+        }
+    });
+
     // Auto-save on input (debounced)
     let autoSaveTimeout;
     const inputs = document.querySelectorAll('.text-input, .text-area');

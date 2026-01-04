@@ -177,36 +177,92 @@
                 </div>
 
                 <div class="summary-content" id="summaryContent" style="display: none;">
-                    <!-- Gratitude Summary -->
-                    <div class="summary-section">
-                        <h4 class="summary-section-title">
-                            <span class="summary-icon">🙏</span>
-                            Gratidões do Mês
-                        </h4>
-                        <div id="gratitudeSummary" class="summary-list">
-                            <p class="empty-message">Nenhuma gratidão registrada ainda.</p>
+                    <!-- AI Summary Section -->
+                    <div class="ai-summary-section">
+                        <div class="ai-summary-intro">
+                            <p class="ai-intro-text">
+                                Gere um resumo inteligente e personalizado do seu mês usando IA.
+                                O resumo analisará suas gratidões, objetivos e áreas de melhoria para fornecer
+                                insights valiosos sobre seu crescimento espiritual.
+                            </p>
+                        </div>
+
+                        <div class="ai-summary-actions">
+                            <button id="generateAISummary" class="ai-summary-btn">
+                                <svg class="ai-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                    <path d="M2 17l10 5 10-5" />
+                                    <path d="M2 12l10 5 10-5" />
+                                </svg>
+                                <span class="ai-btn-text">Gerar Resumo com IA</span>
+                            </button>
+                        </div>
+
+                        <div id="aiSummaryResult" class="ai-summary-result" style="display: none;">
+                            <div class="ai-summary-header">
+                                <span class="ai-badge">✨ Resumo Gerado por IA</span>
+                            </div>
+                            <div id="aiSummaryText" class="ai-summary-text">
+                                <!-- AI summary will be displayed here -->
+                            </div>
+                        </div>
+
+                        <div id="aiSummaryLoading" class="ai-summary-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Analisando seus registros e gerando insights...</p>
+                        </div>
+
+                        <div id="aiSummaryError" class="ai-summary-error" style="display: none;">
+                            <p class="error-text">Não foi possível gerar o resumo. Verifique sua chave de API do Gemini.
+                            </p>
+                            <button id="retryAISummary" class="retry-btn">Tentar Novamente</button>
                         </div>
                     </div>
 
-                    <!-- Goals Summary -->
-                    <div class="summary-section">
-                        <h4 class="summary-section-title">
-                            <span class="summary-icon">🎯</span>
-                            Alvos Definidos
-                        </h4>
-                        <div id="goalsSummary" class="summary-list">
-                            <p class="empty-message">Nenhum alvo registrado ainda.</p>
-                        </div>
-                    </div>
+                    <!-- Raw Data Section (Collapsible) -->
+                    <div class="raw-data-section">
+                        <button id="toggleRawData" class="toggle-raw-data-btn">
+                            <span id="rawDataBtnText">Ver Dados Detalhados</span>
+                            <svg class="toggle-icon-small" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </button>
 
-                    <!-- Improvements Summary -->
-                    <div class="summary-section">
-                        <h4 class="summary-section-title">
-                            <span class="summary-icon">📈</span>
-                            Áreas de Melhoria
-                        </h4>
-                        <div id="improvementsSummary" class="summary-list">
-                            <p class="empty-message">Nenhuma melhoria registrada ainda.</p>
+                        <div id="rawDataContent" class="raw-data-content" style="display: none;">
+                            <!-- Gratitude Summary -->
+                            <div class="summary-section">
+                                <h4 class="summary-section-title">
+                                    <span class="summary-icon">🙏</span>
+                                    Gratidões do Mês
+                                </h4>
+                                <div id="gratitudeSummary" class="summary-list">
+                                    <p class="empty-message">Nenhuma gratidão registrada ainda.</p>
+                                </div>
+                            </div>
+
+                            <!-- Goals Summary -->
+                            <div class="summary-section">
+                                <h4 class="summary-section-title">
+                                    <span class="summary-icon">🎯</span>
+                                    Alvos Definidos
+                                </h4>
+                                <div id="goalsSummary" class="summary-list">
+                                    <p class="empty-message">Nenhum alvo registrado ainda.</p>
+                                </div>
+                            </div>
+
+                            <!-- Improvements Summary -->
+                            <div class="summary-section">
+                                <h4 class="summary-section-title">
+                                    <span class="summary-icon">📈</span>
+                                    Áreas de Melhoria
+                                </h4>
+                                <div id="improvementsSummary" class="summary-list">
+                                    <p class="empty-message">Nenhuma melhoria registrada ainda.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -229,6 +285,7 @@
         <span id="toastMessage">Registro salvo com sucesso!</span>
     </div>
 
+    <script src="gemini-config.js"></script>
     <script src="app.js"></script>
 </body>
 
